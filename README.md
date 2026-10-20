@@ -51,3 +51,7 @@ Much of Soulseek.NET was made possible by the work of others. The following reso
 * [livelook](https://github.com/misterhat/livelook) by @misterhat
 * [museek-plus](https://github.com/eLvErDe/museek-plus) by @eLvErDe
 * [slsk-client](https://github.com/f-hj/slsk-client) by @f-hj.
+
+## Security scanning
+
+Run scripts/security-scan-local.sh for local Semgrep Community Edition and applicable Trivy scans. Public GitHub Actions workflows run these scans on changes and weekly, alongside any existing CodeQL workflow. See docs/security-scanning.md for offline setup and updates. Run scripts/install-security-hooks.sh once to enable the staged Semgrep pre-commit hook.
