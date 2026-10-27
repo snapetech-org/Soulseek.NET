@@ -2,7 +2,7 @@
 
 Copy into `docs/dev/bug-council-negative-space.md` and replace the boundaries below with the trust boundaries of your codebase.
 
-The candidate scanner finds **call sites that exist**. It cannot find **call sites that should exist but don't** — for example, a new public boundary that takes untrusted input but never calls a validator. This document declares your trust boundaries and the validator each one must run, so a missing validator is itself a CI failure.
+This document declares known trust boundaries and the validator each one must run, so a missing validator is itself a CI failure. Use Semgrep and Trivy for broad source, dependency, secret, and configuration scans.
 
 The gate is enforced by `scripts/check-council-negative-space.sh`, which is invoked from `scripts/check-remediation-baseline.sh`.
 

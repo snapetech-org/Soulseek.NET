@@ -1,6 +1,6 @@
 # Bug Council Severity And Confidence Schema
 
-Every accepted council finding gets a **severity** and a **confidence**. The two fields together let the council triage a 300-row sweep without re-reading every rationale. They are also what makes the council legible to outside reviewers: severity says how bad the bug is, confidence says how sure we are.
+Every confirmed finding gets a **severity** and a **confidence**. Severity says how serious the impact is; confidence records how strong the evidence is.
 
 ## Severity
 
@@ -20,28 +20,28 @@ Pick the **worst plausible** severity given current code paths. If the same code
 | --- | --- |
 | Proven | A failing test exists or could be written from the rationale alone. The bug is reproducible. |
 | Likely | The reasoning is sound and the call graph is short, but no test reproduces it yet. |
-| Speculative | The pattern is suspicious but the call graph is long, gated, or partially unverified. Used to keep a candidate in the queue without blocking a sweep close. |
+| Unverified | A scanner or report raised the issue, but the behavior is not yet reproduced or confirmed. Keep it out of the confirmed-finding ledger until triaged. |
 
-Speculative findings cannot be marked Fixed without first being upgraded to Likely or Proven. A speculative finding can be marked False positive only with a written rationale; otherwise it carries forward to the next sweep.
+Unverified reports should be triaged against the source and scanner evidence before they are added to the confirmed-finding ledger.
 
-## Use in sweep tables
+## Use in confirmed-finding records
 
-Sweep registers extend their candidate tables with two columns:
+When recording a confirmed issue, include its source and the evidence used to set severity and confidence:
 
 ```
-| Candidate | Severity | Confidence | Classification | Ledger | Rationale |
+| Finding | Severity | Confidence | Status | Source / issue | Rationale |
 | --- | --- | --- | --- | --- | --- |
-| `src/Foo.cs:42` | High | Proven | Fixed | RT-101 | Inbound length read flowed into new byte[N] without ProtocolCountReader. |
+| `src/Foo.cs:42` | High | Proven | Fixed | Semgrep finding / PR #101 | Inbound length read flowed into new byte[N] without ProtocolCountReader. |
 ```
 
-Existing sweep registers do not need to be retroactively annotated. New rows added to existing registers must use the schema. New sweep registers must use the schema for every row.
+Keep the classification in the remediation ledger and link the focused regression test or fix.
 
 ## Promotion rules
 
 - A row's severity can be raised at any time; lowering severity requires a written justification in the rationale.
 - A row's confidence can move both directions and should be updated as evidence accumulates.
-- The **highest severity row of any open sweep** is the council's headline number. It belongs in the phase tracker so the team always knows what the worst open finding looks like.
+- The highest-severity confirmed issue still in progress belongs in the status summary so the team can prioritize remediation.
 
 ## Why two axes instead of one
 
-A single "priority" tier collapses two independent things: how bad it would be, and how sure we are. The council found that mixing them led to either over-prioritizing speculative-but-scary patterns or under-prioritizing proven-but-medium correctness bugs. The severity-confidence split reflects how the actual decisions get made: a Proven Medium finding is fixed before a Speculative High one because the cost of the Proven fix is bounded.
+A single "priority" tier collapses two independent things: how bad the impact is, and how strong the evidence is. Keeping the axes separate helps triage Semgrep and Trivy reports without treating every scanner match as a confirmed bug.
