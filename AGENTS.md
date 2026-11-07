@@ -1,22 +1,19 @@
-## Runner policy — owner directive, 2026-11-03
+## Runner and delivery policy — current owner directive
 
-GitHub-hosted runner minutes are available again. Use compatible GitHub-hosted
-runners for build, test, scan, packaging and release jobs when their operating
-system and architecture requirements are met. Preserve native OS and
-architecture. Use private ephemeral JIT runners when a job needs private
-network access, special hardware or storage, or explicit JIT validation. Do not
-require private JIT solely because of the former organization-wide policy, and
-do not treat missing private capacity as a blocker when a compatible hosted
-runner is available.
+All build, test, scan, packaging and release jobs use compatible private,
+ephemeral JIT runners. Preserve native OS and architecture. Hosted runners and
+fallbacks are prohibited; missing private capacity is a provisioning blocker.
+Keep untrusted fork code in disposable VM-backed JIT guests with no secrets,
+minimal read access and restricted egress. Do not widen trusted runner access.
+Preserve active builds and other agents' work; never restart a broker owning
+guests. Validate source routing, broker policy, runner-group access and live
+capacity together. The shared pool inventory in the organization's packer
+repository is authoritative.
 
-Keep untrusted pull-request code isolated in a disposable environment without
-secrets, with minimal permissions and restricted egress. Do not widen trusted
-runner-group access to make untrusted code run. Preserve active builds and other
-agents' work. Do not restart the broker while it owns running guests. Select a
-runner route that fits the workload and trust requirements; rerunning an old
-run uses its original workflow revision.
+CodeQL is disabled organization-wide. Do not restore or reroute it without a
+new explicit owner instruction. Other jobs retain the private JIT requirement.
 
-The shared inventory continues to govern private JIT jobs. For a private route,
-verify source routing, broker policy, runner-group access and live capacity
-before relying on it.
+Standing authorization applies to focused task commits and prompt pushes to the
+remote default main/master branch. Stage only task changes, preserve unrelated
+work, omit secrets, and never force-push or rewrite published history.
 
