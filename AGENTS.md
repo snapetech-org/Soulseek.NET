@@ -10,8 +10,8 @@ guests. Validate source routing, broker policy, runner-group access and live
 capacity together. The shared pool inventory in the organization's packer
 repository is authoritative.
 
-CodeQL is disabled organization-wide. Do not restore or reroute it without a
-new explicit owner instruction. Other jobs retain the private JIT requirement.
+CodeQL is allowed (owner directive, 2026-11-21); the 2026-10-30 disable is
+withdrawn. Other jobs retain the private JIT requirement.
 
 Standing authorization applies to focused task commits and prompt pushes to the
 remote default main/master branch. Stage only task changes, preserve unrelated
