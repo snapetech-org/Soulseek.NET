@@ -12,6 +12,10 @@ work; never restart a broker owning guests. For a job that genuinely needs
 private JIT, the shared pool inventory in the organization's packer repository
 is authoritative.
 
+Exception (owner directive, 2026-11-21): the Semgrep and Trivy scan workflows
+run only on private ephemeral JIT runners, never on hosted runners. All other
+build, test, packaging and release jobs use compatible hosted runners.
+
 CodeQL is allowed (owner directive, 2026-11-21); the 2026-10-30 disable is
 withdrawn.
 
