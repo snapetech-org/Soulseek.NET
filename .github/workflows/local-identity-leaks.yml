@@ -1,4 +1,4 @@
-# ng-runner-policy: private-jit-only-v1
+# ng-runner-policy: hosted-compatible-v1
 name: Local Identity Leak Check
 
 run-name: ${{ format('action:{0}:pool:{1}', inputs.action, inputs.runner_pool) }}
@@ -8,21 +8,21 @@ on:
 
     inputs:
       action:
-        description: Run the private security scan
+        description: Run the security scan
         required: true
         type: choice
         options:
           - scan
       runner_pool:
-        description: Select the private ephemeral runner pool
+        description: Select a compatible hosted runner pool
         required: true
         type: choice
-        options: [private]
+        options: [public]
 jobs:
   local-identity-leaks:
     if: >-
-      github.event_name == 'workflow_dispatch' && inputs.action == 'scan' && inputs.runner_pool == 'private' && github.ref == 'refs/heads/master'
-    runs-on: ${{ fromJSON(format('{{"group":"ng-shared-main-jit","labels":["self-hosted","linux","x64","ng-shared-main-soulseek.net","ng-main-run-{0}","gha-{0}-local-identity-leaks"]}}', github.run_id)) }}
+      github.event_name == 'workflow_dispatch' && inputs.action == 'scan' && inputs.runner_pool == 'public' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
